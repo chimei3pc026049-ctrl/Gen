@@ -661,7 +661,7 @@ footer strong { color: var(--text-dim); }
           <input type="text" class="form-input" id="name" placeholder="請輸入您的姓名">
         </div>
         <div class="form-group">
-          <label class="form-label">工號 <span class="req">*</span></label>
+          <label class="form-label">人事號 <span class="req">*</span></label>
           <input type="text" class="form-input" id="empId" placeholder="請輸入員工編號">
         </div>
         <div class="form-group">
@@ -686,8 +686,8 @@ footer strong { color: var(--text-dim); }
     <!-- 查詢 -->
     <div class="tab-content" id="content-query">
       <div class="form-group" style="margin-bottom:20px;">
-        <label class="form-label">輸入工號查詢報名紀錄</label>
-        <input type="text" class="form-input" id="queryEmpId" placeholder="請輸入工號">
+        <label class="form-label">輸入人事號查詢報名紀錄</label>
+        <input type="text" class="form-input" id="queryEmpId" placeholder="請輸入人事號">
       </div>
       <button class="btn btn-secondary" onclick="queryRecord()">🔍 查 詢</button>
       <div class="query-result" id="queryResult"></div>
@@ -779,13 +779,13 @@ function submitForm() {
   var email = document.getElementById('email').value.trim();
 
   if (!name || !empId || !dept) {
-    showMsg('regMsg', 'warn', '⚠️ 請填寫姓名、工號、單位');
+    showMsg('regMsg', 'warn', '⚠️ 請填寫姓名、人事號、單位');
     return;
   }
 
   // 檢查報名期間（115/6/1 ~ 115/6/15）
   var now = new Date();
-  var start = new Date(2026, 5, 1, 0, 0, 0);   // 民國 115 年 = 西元 2026 年
+  var start = new Date(2026, 4, 1, 0, 0, 0);   // 民國 115 年 = 西元 2026 年
   var end = new Date(2026, 5, 15, 23, 59, 59);
   if (now < start) {
     showMsg('regMsg', 'warn', '⚠️ 報名期間尚未開始（115/6/1 開放）');
@@ -846,7 +846,7 @@ function queryRecord() {
   document.getElementById('queryResult').classList.remove('show');
   var empId = document.getElementById('queryEmpId').value.trim();
   if (!empId) {
-    showMsg('queryMsg', 'warn', '⚠️ 請輸入工號');
+    showMsg('queryMsg', 'warn', '⚠️ 請輸入人事號');
     return;
   }
 
@@ -858,7 +858,7 @@ function queryRecord() {
         var html = '';
         html += '<div class="record-row"><div class="record-label">報名時間</div><div class="record-value">' + rec.timestamp + '</div></div>';
         html += '<div class="record-row"><div class="record-label">姓名</div><div class="record-value">' + rec.name + '</div></div>';
-        html += '<div class="record-row"><div class="record-label">工號</div><div class="record-value">' + rec.empId + '</div></div>';
+        html += '<div class="record-row"><div class="record-label">人事號</div><div class="record-value">' + rec.empId + '</div></div>';
         html += '<div class="record-row"><div class="record-label">單位</div><div class="record-value">' + rec.dept + '</div></div>';
         if (rec.ext) html += '<div class="record-row"><div class="record-label">分機</div><div class="record-value">' + rec.ext + '</div></div>';
         if (rec.email) html += '<div class="record-row"><div class="record-label">信箱</div><div class="record-value">' + rec.email + '</div></div>';
@@ -867,7 +867,7 @@ function queryRecord() {
         document.getElementById('queryResult').classList.add('show');
         showMsg('queryMsg', 'success', '✅ 找到 1 筆報名紀錄');
       } else {
-        showMsg('queryMsg', 'warn', '⚠️ 查無此工號的報名紀錄');
+        showMsg('queryMsg', 'warn', '⚠️ 查無此人事號的報名紀錄');
       }
     })
     .catch(function(e) {
