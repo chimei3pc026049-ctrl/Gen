@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI 基礎應用班 — 線上報名｜佳里奇美醫院</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Sora:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a1024;
+  --bg-card: rgba(17,25,44,0.85);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --cyan: #56c8d8;
+  --cyan-bright: #67e8f9;
+  --blue: #3b82f6;
+  --purple: #a78bfa;
+  --teal: #2dd4bf;
+  --amber: #fbbf24;
+  --success: #34d399;
+  --error: #f87171;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 18px; }  /* ★ 基準字級放大 */
+
+body {
+  font-family: "Noto Sans TC", "Sora", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(86,200,216,0.15), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 30%, rgba(167,139,250,0.12), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 50% 100%, rgba(45,212,191,0.1), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(86,200,216,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86,200,216,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
+}
+
+.container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* ───────── HERO ───────── */
+.hero { text-align: center; padding: 40px 0 48px; }
+.hero-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(86,200,216,0.1);
+  border: 1px solid rgba(86,200,216,0.3);
+  border-radius: 100px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-family: "Sora", "Noto Sans TC", sans-serif;
+  font-size: 3rem;  /* ★ 大字 */
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 30%, var(--cyan-bright) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 1.35rem;  /* ★ 副標也加大 */
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.hero-org {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-family: "Space Mono", monospace;
+  letter-spacing: 1px;
+}
+
+/* ───────── 剩餘名額大字區 ───────── */
+.capacity-hero {
+  background: linear-gradient(145deg, rgba(86,200,216,0.08), rgba(167,139,250,0.06));
+  border: 2px solid rgba(86,200,216,0.25);
+  border-radius: 24px;
+  padding: 48px 40px;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(86,200,216,0.08);
+}
+
+.capacity-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(86,200,216,0.15), transparent 40%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.capacity-hero-inner { position: relative; z-index: 1; }
+
+.capacity-label {
+  font-size: 1.3rem;  /* ★ 大字 */
+  font-weight: 700;
+  color: var(--cyan-bright);
+  letter-spacing: 8px;
+  margin-bottom: 24px;
+}
+
+.capacity-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.cap-remaining {
+  font-family: "Sora", sans-serif;
+  font-size: 9rem;  /* ★★★ 超大字 */
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(180deg, #fff, var(--cyan-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 60px rgba(86,200,216,0.5);
+  transition: all 0.3s;
+}
+
+.cap-remaining.amber { background: linear-gradient(180deg, #fff, var(--amber)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.cap-remaining.red { background: linear-gradient(180deg, #fff, var(--error)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+.cap-unit {
+  font-size: 3rem;  /* ★ 大字 */
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cap-total {
+  font-size: 1.5rem;  /* ★ 大字 */
+  color: var(--text-dim);
+  font-family: "Space Mono", monospace;
+}
+
+/* 進度條 */
+.cap-bar-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05);
+  border-radius: 100px;
+  height: 24px;  /* ★ 加粗 */
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.cap-bar {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--success), var(--cyan));
+  transition: width 0.8s ease, background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cap-bar.amber { background: linear-gradient(90deg, var(--amber), #fb923c); }
+.cap-bar.red { background: linear-gradient(90deg, var(--error), #dc2626); }
+
+.cap-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.cap-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 24px;
+  font-size: 1.15rem;  /* ★ 大字 */
+  flex-wrap: wrap;
+}
+
+.cap-stat-item {
+  color: var(--text-dim);
+}
+
+.cap-stat-item strong {
+  color: var(--text);
+  font-weight: 700;
+  font-family: "Space Mono", monospace;
+  font-size: 1.4rem;
+  margin: 0 6px;
+}
+
+/* ───────── 課程資訊卡片 ───────── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  backdrop-filter: blur(20px);
+}
+
+.info-card-label {
+  font-size: 0.95rem;
+  color: var(--cyan);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-card-value {
+  font-size: 1.35rem;  /* ★ 大字 */
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.info-card-sub {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ───────── 課程內容 ───────── */
+.modules-section {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 36px 32px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(20px);
+}
+
+.section-title {
+  font-size: 1.8rem;  /* ★ 大字 */
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: linear-gradient(180deg, var(--cyan), var(--purple));
+  border-radius: 3px;
+}
+
+.modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.module {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 24px 22px;
+  transition: all 0.3s;
+}
+
+.module:hover {
+  border-color: rgba(86,200,216,0.3);
+  transform: translateY(-2px);
+}
+
+.module-num {
+  font-family: "Space Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.module-title {
+  font-size: 1.25rem;  /* ★ 大字 */
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.5;
+}
+
+/* ───────── 報名表單 ───────── */
+.form-section {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 40px 36px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(20px);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.tab {
+  padding: 14px 28px;
+  font-size: 1.15rem;  /* ★ 大字 */
+  font-weight: 700;
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.tab.active {
+  color: var(--cyan-bright);
+  border-bottom-color: var(--cyan);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full { grid-column: 1 / -1; }
+
+.form-label {
+  font-size: 1.05rem;  /* ★ 大字 */
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-label .req { color: var(--error); }
+
+.form-input {
+  padding: 16px 20px;  /* ★ padding 加大 */
+  background: rgba(255,255,255,0.04);
+  border: 2px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 1.15rem;  /* ★ input 字體大 */
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--cyan);
+  background: rgba(86,200,216,0.06);
+  box-shadow: 0 0 0 4px rgba(86,200,216,0.1);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 40px;  /* ★ 加大 */
+  font-size: 1.3rem;   /* ★ 大字 */
+  font-weight: 800;
+  color: #0a1024;
+  background: linear-gradient(135deg, var(--cyan), var(--teal));
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  width: 100%;
+  box-shadow: 0 8px 30px rgba(86,200,216,0.3);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(86,200,216,0.4);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--text-muted);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 2px solid var(--glass-border);
+  box-shadow: none;
+}
+
+/* 訊息 */
+.message {
+  padding: 20px 24px;
+  border-radius: 14px;
+  margin-top: 20px;
+  font-size: 1.15rem;  /* ★ 大字 */
+  font-weight: 700;
+  text-align: center;
+  display: none;
+  border: 2px solid;
+}
+
+.message.show { display: block; animation: slide 0.3s; }
+
+@keyframes slide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message.success { background: rgba(52,211,153,0.1); color: var(--success); border-color: rgba(52,211,153,0.3); }
+.message.error { background: rgba(248,113,113,0.1); color: var(--error); border-color: rgba(248,113,113,0.3); }
+.message.warn { background: rgba(251,191,36,0.1); color: var(--amber); border-color: rgba(251,191,36,0.3); }
+
+/* 查詢結果 */
+.query-result {
+  margin-top: 24px;
+  padding: 24px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  display: none;
+}
+
+.query-result.show { display: block; }
+
+.record-row {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 1.1rem;  /* ★ 大字 */
+}
+
+.record-row:last-child { border-bottom: none; }
+.record-label { width: 100px; color: var(--text-dim); }
+.record-value { color: var(--text); font-weight: 600; flex: 1; }
+
+/* 報名期間提醒 */
+.notice {
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.25);
+  border-left: 4px solid var(--amber);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  font-size: 1.05rem;
+  color: #fde68a;
+  line-height: 1.7;
+}
+
+.notice strong { color: var(--amber); }
+
+/* 額滿覆蓋 */
+.full-banner {
+  background: rgba(248,113,113,0.1);
+  border: 2px solid rgba(248,113,113,0.4);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  display: none;
+}
+.full-banner.show { display: block; }
+.full-banner-title { font-size: 1.6rem; font-weight: 800; color: var(--error); margin-bottom: 8px; }
+.full-banner-text { font-size: 1.1rem; color: var(--text-dim); }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 0 0;
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+footer strong { color: var(--text-dim); }
+
+/* RWD */
+@media (max-width: 768px) {
+  html { font-size: 16px; }
+  .hero h1 { font-size: 2.2rem; }
+  .cap-remaining { font-size: 7rem; }
+  .cap-unit { font-size: 2.4rem; }
+  .form-grid { grid-template-columns: 1fr; }
+  .capacity-hero { padding: 36px 24px; }
+  .form-section { padding: 28px 22px; }
+  .tab { padding: 12px 18px; font-size: 1.05rem; }
+}
+
+@media (max-width: 480px) {
+  .cap-remaining { font-size: 5.5rem; }
+  .cap-unit { font-size: 2rem; }
+  .cap-stats { gap: 20px; font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">🤖 健康台灣 深耕計畫 ｜ 2026</div>
+    <h1>GenAI 基礎應用班</h1>
+    <p class="hero-sub">智慧醫療 AI 數位賦能課程 — 打造醫療人員 AI 基礎能力</p>
+    <p class="hero-org">佳里奇美醫院 教學研究組</p>
+  </div>
+
+  <!-- ★★★ 剩餘名額大字區 ★★★ -->
+  <div class="capacity-hero">
+    <div class="capacity-hero-inner">
+      <div class="capacity-label">剩 餘 名 額</div>
+      <div class="capacity-number">
+        <span class="cap-remaining" id="capRemaining">--</span>
+        <span class="cap-unit">位</span>
+      </div>
+      <div class="cap-bar-wrap">
+        <div class="cap-bar" id="capBar" style="width:0%"></div>
+      </div>
+      <div class="cap-stats">
+        <div class="cap-stat-item">已報名 <strong id="statRegistered">--</strong> 位</div>
+        <div class="cap-stat-item">總名額 <strong>50</strong> 位</div>
+        <div class="cap-stat-item">填滿率 <strong id="statRate">--</strong> %</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 課程資訊卡 -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-label">📅 課程日期</div>
+      <div class="info-card-value">115/6/22</div>
+      <div class="info-card-sub">星期一</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">🕐 課程時間</div>
+      <div class="info-card-value">13:00 – 17:00</div>
+      <div class="info-card-sub">下午 4 小時</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">📍 上課地點</div>
+      <div class="info-card-value">A81 會議室</div>
+      <div class="info-card-sub">佳里院區</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">👥 招收名額</div>
+      <div class="info-card-value">50 位</div>
+      <div class="info-card-sub">院內同仁</div>
+    </div>
+  </div>
+
+  <!-- 課程內容 -->
+  <div class="modules-section">
+    <h2 class="section-title">課程內容</h2>
+    <div class="modules">
+      <div class="module">
+        <div class="module-num">MODULE 01</div>
+        <div class="module-title">⚖️ 醫療生成式 AI 的<br>法律、倫理與資安紅線</div>
+      </div>
+      <div class="module">
+        <div class="module-num">MODULE 02</div>
+        <div class="module-title">💻 GAI AI 工具應用</div>
+      </div>
+      <div class="module">
+        <div class="module-num">MODULE 03</div>
+        <div class="module-title">📊 GAI 簡報自動化工作流</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 報名表單 -->
+  <div class="form-section">
+    <div class="tabs">
+      <button class="tab active" id="tab-reg" onclick="switchTab('reg')">📝 線上報名</button>
+      <button class="tab" id="tab-query" onclick="switchTab('query')">🔍 查詢報名紀錄</button>
+    </div>
+
+    <!-- 報名 -->
+    <div class="tab-content active" id="content-reg">
+      <div class="notice">
+        <strong>📌 報名期間：</strong>115/6/1（一）00:00 至 115/6/15（一）23:59 ※ 額滿截止<br>
+        <strong>📌 課程提醒：</strong>請自備筆記型電腦 ｜ 聯絡窗口：林欣蓁 分機 32985
+      </div>
+
+      <div class="full-banner" id="fullBanner">
+        <div class="full-banner-title">❌ 已額滿</div>
+        <div class="full-banner-text">本班報名名額已滿，感謝您的踴躍報名</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">姓名 <span class="req">*</span></label>
+          <input type="text" class="form-input" id="name" placeholder="請輸入您的姓名">
+        </div>
+        <div class="form-group">
+          <label class="form-label">工號 <span class="req">*</span></label>
+          <input type="text" class="form-input" id="empId" placeholder="請輸入員工編號">
+        </div>
+        <div class="form-group">
+          <label class="form-label">單位 <span class="req">*</span></label>
+          <input type="text" class="form-input" id="dept" placeholder="所屬科室/單位">
+        </div>
+        <div class="form-group">
+          <label class="form-label">分機</label>
+          <input type="text" class="form-input" id="ext" placeholder="院內分機">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">電子信箱（用於寄送報名確認信）</label>
+          <input type="email" class="form-input" id="email" placeholder="example@mail.chimei.org.tw">
+        </div>
+      </div>
+
+      <button class="btn" id="submitBtn" onclick="submitForm()">立 即 報 名</button>
+
+      <div class="message" id="regMsg"></div>
+    </div>
+
+    <!-- 查詢 -->
+    <div class="tab-content" id="content-query">
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label">輸入工號查詢報名紀錄</label>
+        <input type="text" class="form-input" id="queryEmpId" placeholder="請輸入工號">
+      </div>
+      <button class="btn btn-secondary" onclick="queryRecord()">🔍 查 詢</button>
+      <div class="query-result" id="queryResult"></div>
+      <div class="message" id="queryMsg"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>主辦單位 ｜ 佳里奇美醫院 教學研究組</strong></p>
+    <p>聯絡窗口：林欣蓁 ｜ 分機 32985</p>
+    <p style="margin-top:12px;font-size:0.85rem;">健康台灣 深耕計畫 ｜ 智慧醫療 AI 數位賦能課程</p>
+  </footer>
+
+</div>
+
+<script>
+// ★★★ 請替換成你的 Apps Script 部署網址 ★★★
+var API_URL = 'https://script.google.com/macros/s/AKfycbxL39Kc2I7w-W0_XID3P71V3_gpmI8dBUtLUC4P8oAdd4s75c1rvRslLyiZPqP9zYfkdw/exec';
+var MAX = 50;
+
+// ────── 取得名額 ──────
+function fetchCounts() {
+  fetch(API_URL + '?action=counts')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && typeof data.remaining !== 'undefined') {
+        updateCapacityUI(data.registered, data.remaining);
+      }
+    })
+    .catch(function(e) {
+      console.log('取得名額失敗', e);
+      document.getElementById('capRemaining').textContent = '?';
+    });
+}
+
+function updateCapacityUI(registered, remaining) {
+  var capEl = document.getElementById('capRemaining');
+  var barEl = document.getElementById('capBar');
+  var pct = Math.round((registered / MAX) * 100);
+
+  capEl.textContent = remaining;
+  document.getElementById('statRegistered').textContent = registered;
+  document.getElementById('statRate').textContent = pct;
+  barEl.style.width = pct + '%';
+
+  // 顏色變化
+  capEl.classList.remove('amber', 'red');
+  barEl.classList.remove('amber', 'red');
+  if (remaining <= 0) {
+    capEl.classList.add('red');
+    barEl.classList.add('red');
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = '名額已滿';
+    document.getElementById('fullBanner').classList.add('show');
+  } else if (remaining <= 10) {
+    capEl.classList.add('amber');
+    barEl.classList.add('amber');
+  }
+}
+
+// ────── Tab 切換 ──────
+function switchTab(name) {
+  document.getElementById('tab-reg').classList.remove('active');
+  document.getElementById('tab-query').classList.remove('active');
+  document.getElementById('content-reg').classList.remove('active');
+  document.getElementById('content-query').classList.remove('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('content-' + name).classList.add('active');
+}
+
+// ────── 顯示訊息 ──────
+function showMsg(id, type, text) {
+  var el = document.getElementById(id);
+  el.className = 'message show ' + type;
+  el.textContent = text;
+}
+
+function hideMsg(id) {
+  document.getElementById(id).className = 'message';
+}
+
+// ────── 報名 ──────
+function submitForm() {
+  hideMsg('regMsg');
+  var name = document.getElementById('name').value.trim();
+  var empId = document.getElementById('empId').value.trim();
+  var dept = document.getElementById('dept').value.trim();
+  var ext = document.getElementById('ext').value.trim();
+  var email = document.getElementById('email').value.trim();
+
+  if (!name || !empId || !dept) {
+    showMsg('regMsg', 'warn', '⚠️ 請填寫姓名、工號、單位');
+    return;
+  }
+
+  // 檢查報名期間（115/6/1 ~ 115/6/15）
+  var now = new Date();
+  var start = new Date(2026, 5, 1, 0, 0, 0);   // 民國 115 年 = 西元 2026 年
+  var end = new Date(2026, 5, 15, 23, 59, 59);
+  if (now < start) {
+    showMsg('regMsg', 'warn', '⚠️ 報名期間尚未開始（115/6/1 開放）');
+    return;
+  }
+  if (now > end) {
+    showMsg('regMsg', 'warn', '⚠️ 報名期間已截止');
+    return;
+  }
+
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送出中...';
+
+  var payload = {
+    action: 'register',
+    name: name, empId: empId, dept: dept, ext: ext, email: email,
+    timestamp: new Date().toLocaleString('zh-TW')
+  };
+
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.disabled = false;
+      btn.textContent = '立 即 報 名';
+      if (data.status === 'success') {
+        showMsg('regMsg', 'success', '✅ 報名成功！' + (email ? '確認信已寄至 ' + email : ''));
+        // 清空表單
+        document.getElementById('name').value = '';
+        document.getElementById('empId').value = '';
+        document.getElementById('dept').value = '';
+        document.getElementById('ext').value = '';
+        document.getElementById('email').value = '';
+        updateCapacityUI(data.registered, data.remaining);
+      } else if (data.status === 'duplicate') {
+        showMsg('regMsg', 'warn', '⚠️ ' + data.message);
+      } else if (data.status === 'full') {
+        showMsg('regMsg', 'error', '❌ ' + data.message);
+        updateCapacityUI(data.registered, 0);
+      } else {
+        showMsg('regMsg', 'error', '❌ ' + (data.message || '報名失敗，請稍後再試'));
+      }
+    })
+    .catch(function(e) {
+      btn.disabled = false;
+      btn.textContent = '立 即 報 名';
+      showMsg('regMsg', 'error', '❌ 連線失敗：' + e.message);
+    });
+}
+
+// ────── 查詢 ──────
+function queryRecord() {
+  hideMsg('queryMsg');
+  document.getElementById('queryResult').classList.remove('show');
+  var empId = document.getElementById('queryEmpId').value.trim();
+  if (!empId) {
+    showMsg('queryMsg', 'warn', '⚠️ 請輸入工號');
+    return;
+  }
+
+  fetch(API_URL + '?action=query&empId=' + encodeURIComponent(empId))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'success' && data.records && data.records.length > 0) {
+        var rec = data.records[0];
+        var html = '';
+        html += '<div class="record-row"><div class="record-label">報名時間</div><div class="record-value">' + rec.timestamp + '</div></div>';
+        html += '<div class="record-row"><div class="record-label">姓名</div><div class="record-value">' + rec.name + '</div></div>';
+        html += '<div class="record-row"><div class="record-label">工號</div><div class="record-value">' + rec.empId + '</div></div>';
+        html += '<div class="record-row"><div class="record-label">單位</div><div class="record-value">' + rec.dept + '</div></div>';
+        if (rec.ext) html += '<div class="record-row"><div class="record-label">分機</div><div class="record-value">' + rec.ext + '</div></div>';
+        if (rec.email) html += '<div class="record-row"><div class="record-label">信箱</div><div class="record-value">' + rec.email + '</div></div>';
+        html += '<div class="record-row"><div class="record-label">課程</div><div class="record-value">' + rec.courses + '</div></div>';
+        document.getElementById('queryResult').innerHTML = html;
+        document.getElementById('queryResult').classList.add('show');
+        showMsg('queryMsg', 'success', '✅ 找到 1 筆報名紀錄');
+      } else {
+        showMsg('queryMsg', 'warn', '⚠️ 查無此工號的報名紀錄');
+      }
+    })
+    .catch(function(e) {
+      showMsg('queryMsg', 'error', '❌ 查詢失敗：' + e.message);
+    });
+}
+
+// ────── 啟動 ──────
+fetchCounts();
+// 每 30 秒自動更新名額
+setInterval(fetchCounts, 30000);
+</script>
+</body>
+</html>
