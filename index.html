@@ -785,8 +785,8 @@ function submitForm() {
 
   // 檢查報名期間（115/6/1 ~ 115/6/15）
   var now = new Date();
-  var start = new Date(2026, 4, 1, 0, 0, 0);   // 民國 115 年 = 西元 2026 年
-  var end = new Date(2026, 5, 15, 23, 59, 59);
+  var start = new Date(2026, 5, 1, 0, 0, 0);   // 民國 115 年 = 西元 2026 年
+  var end = new Date(2026, 6, 15, 23, 59, 59);
   if (now < start) {
     showMsg('regMsg', 'warn', '⚠️ 報名期間尚未開始（115/6/1 開放）');
     return;
